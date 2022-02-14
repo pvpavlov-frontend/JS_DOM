@@ -1,7 +1,7 @@
 'use strict';
 
 class Slider {
-  constructor(slides, currentSlideIndex = 0) {
+  constructor(slides, currentSlideIndex = 1) {
     this.slides = slides;
     this.currentSlideIndex = currentSlideIndex;
   }
@@ -21,20 +21,35 @@ class Slider {
     this._currentSlideIndex = v;
   }
 
-  incSlideIndex() {
-    this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
-  }
-
-  decSlideIndex() {
-    this.currentSlideIndex =
-      (this.currentSlideIndex - 1 + this.slides.length) % this.slides.length;
-  }
-
   get currentSlideIndex() {
     return this._currentSlideIndex;
   }
 
+  decSlideIndex() {
+    this.currentSlideIndex = this.prevSlideIndex;
+  }
+  incSlideIndex() {
+    this.currentSlideIndex = this.nextSlideIndex
+  }
+
+
+  get prevSlideIndex() {
+    return (
+      (this.currentSlideIndex - 1 + this.slides.length) % this.slides.length
+    );
+  }
+
+  get nextSlideIndex() {
+    return (this.currentSlideIndex + 1) % this.slides.length;
+  }
+
+  get currentSlidePrev() {
+    return this.slides[this.prevSlideIndex]
+  }
   get currentSlide() {
     return this.slides[this._currentSlideIndex];
+  }
+  get currentSlidePrevNext() {
+    return this.slides[this.nextSlideIndex];
   }
 }

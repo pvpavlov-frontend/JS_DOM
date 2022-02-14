@@ -81,26 +81,46 @@ document.querySelector('#elem').addEventListener('click', function(){
 try {
   const slider = new Slider(slides, 0);
 
-  const imgEl = document.querySelector('.img-wrapper>img');
-  const [prevBtn, nextBtn] = document.querySelectorAll('.btn-slider');
+  const [slideOne, slideTwo, slideThree ] = document.querySelectorAll('.slider-container img');
 
-  updateSlide(slider.currentSlide);
+  const imgEl = document.querySelector('.img-wrapper>img');
+  const prevBtn = document.querySelector('.img-wrapper-prev');
+  const nextBtn = document.querySelector('.img-wrapper-next');
+
+  updateAllSlide();
 
   nextBtn.onclick = () => {
     slider.incSlideIndex();
-
-    updateSlide(slider.currentSlide);
+    updateAllSlide();
   };
 
   prevBtn.onclick = () => {
     slider.decSlideIndex();
-
-    updateSlide(slider.currentSlide);
+    updateAllSlide();
   };
 
-  function updateSlide(currentSlide) {
-    imgEl.src = currentSlide.src;
-    imgEl.alt = currentSlide.alt;
+  function fadeIn(el, display) {
+    el.style.opacity = 0;
+    el.style.display = display || "block";
+    (function fade() {
+        var val = parseFloat(el.style.opacity);
+        if (!((val += .01) > 1)) {
+            el.style.opacity = val;
+            requestAnimationFrame(fade);
+        }
+    })();
+  };
+
+  function updateAllSlide(){
+    updateSlide(slideOne, slider.currentSlidePrev);
+    updateSlide(slideTwo, slider.currentSlide);
+    updateSlide(slideThree, slider.currentSlidePrevNext);
+  }
+
+  function updateSlide(el, currentSlide) {
+    el.src = currentSlide.src;
+    el.alt = currentSlide.alt;
+    fadeIn(el);
   }
 } catch (e) {
   console.log('e :>> ', e);
